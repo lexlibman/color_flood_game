@@ -1,67 +1,37 @@
 import 'package:color_flood/assets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter/animation.dart';
 
-class ColorButton extends StatefulWidget {
+class ColorButton extends StatelessWidget {
   const ColorButton({
     Key? key,
     required this.color,
+    required this.onPressed,
   }) : super(key: key);
 
   final Color color;
-
-  @override
-  State<ColorButton> createState() => _ColorButtonState();
-}
-
-class _ColorButtonState extends State<ColorButton>
-    with SingleTickerProviderStateMixin {
-  late Animation<double> animation;
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 50));
-    animation = Tween<double>(begin: 4, end: 0).animate(controller)
-      ..addListener(() {
-        setState(() {
-          // The state that has been changed here
-        });
-      });
-  }
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        controller.forward();
-        Future.delayed(const Duration(milliseconds: 250), () {
-          controller.reverse();
-        });
-      },
-      child: Neumorphic(
-        padding: const EdgeInsets.all(15),
-        style: NeumorphicStyle(
-            surfaceIntensity: 0,
-            shadowLightColor: Colors.grey,
-            shadowDarkColor: Colors.black,
-            shape: NeumorphicShape.concave,
-            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-            depth: animation.value,
-            lightSource: LightSource.topLeft,
-            color: kMainColor),
+    return NeumorphicButton(
+      padding: const EdgeInsets.all(15),
+      onPressed: onPressed,
+      style: NeumorphicStyle(
+          lightSource: LightSource.top,
+          surfaceIntensity: 0.1,
+          shadowLightColor: Colors.grey,
+          shadowDarkColor: Colors.black,
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
+          color: kMainColor),
+      child: Container(
+        color: kMainColor,
+        height: 15,
+        width: 70,
         child: Container(
-          color: kMainColor,
-          height: 15,
-          width: 70,
-          child: Container(
-            decoration: BoxDecoration(
-              color: widget.color,
-              borderRadius: BorderRadius.circular(5),
-            ),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(5),
           ),
         ),
       ),
