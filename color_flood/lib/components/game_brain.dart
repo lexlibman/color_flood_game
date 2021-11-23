@@ -6,6 +6,8 @@ class GameBrain {
   List numberBoard;
   List<Row> rows = [];
   List<Row> get board => rows;
+  int movesCounter = 0;
+  late Color chosenColor;
 
   List kColorList = [
     k1Color,
@@ -20,11 +22,35 @@ class GameBrain {
   int x = 0;
   int y = 0;
 
+  // Makes game move :)
   void makeMove(int index) {
+    chosenColor = kColorList[index];
+    if (movesCounter < 30 && !isFilled()) {
+      movesCounter++;
+    }
     floodFill(numberBoard, x, y, index);
     createBoard();
   }
 
+  // Checks that numberBoard is filled of same digit
+  bool isFilled() {
+    for (List l in numberBoard) {
+      for (int i in l) {
+        if (i != numberBoard[0][0]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  void resetGame() {
+    movesCounter = 0;
+    generateBoard(14);
+    createBoard();
+  }
+
+  // Flood algorithm
   void floodFillUtil(screen, x, y, prevC, newC) {
     // Base cases
     if (x < 0 || x >= 14 || y < 0 || y >= 14) return;
@@ -48,6 +74,7 @@ class GameBrain {
     floodFillUtil(screen, x, y, prevC, newC);
   }
 
+  // Makes list of rows with colored containers
   void createBoard() {
     rows = [];
     List<Widget> rowOfSquares;
@@ -59,11 +86,11 @@ class GameBrain {
           decoration: BoxDecoration(
               color: kColorList[number],
               border: Border.all(
-                width: 24,
+                width: 25,
                 color: kColorList[number],
               )),
-          height: 23,
-          width: 23,
+          height: 24,
+          width: 24,
         ));
       }
       rows.add(Row(
@@ -72,7 +99,9 @@ class GameBrain {
     }
   }
 
+  // Generates sized list of sized lists with random numbers
   void generateBoard(int size) {
+    numberBoard = [];
     var rng = Random();
     numberBoard =
         List.generate(size, (_) => List.generate(size, (_) => rng.nextInt(6)));

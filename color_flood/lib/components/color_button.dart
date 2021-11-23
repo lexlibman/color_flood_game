@@ -17,16 +17,10 @@ class ColorButton extends StatelessWidget {
     return NeumorphicButton(
       padding: const EdgeInsets.all(15),
       onPressed: onPressed,
-      style: NeumorphicStyle(
-          lightSource: LightSource.top,
-          surfaceIntensity: 0.1,
-          shadowLightColor: Colors.grey,
-          shadowDarkColor: Colors.black,
-          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-          color: kMainColor),
+      style: kNeumorphicStyle,
       child: Container(
         color: kMainColor,
-        height: 15,
+        height: 16,
         width: 70,
         child: Container(
           decoration: BoxDecoration(
