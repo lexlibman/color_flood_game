@@ -1,6 +1,7 @@
-import 'package:color_flood/assets/constants.dart';
+import 'package:color_flood/models/game_brain.dart';
+import 'package:color_flood/screens/main_menu.dart';
 import 'package:flutter/material.dart';
-import 'screens/main_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +12,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Coloringator',
-      theme: ThemeData(
-        primaryColor: kMainColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => GameBrain(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Coloringator',
+        theme: ThemeData.dark(),
+        home: MainMenu(),
       ),
-      home: const MainScreen(),
     );
   }
 }

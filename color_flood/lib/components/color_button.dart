@@ -1,31 +1,39 @@
 import 'package:color_flood/assets/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:color_flood/models/game_brain.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
 
 class ColorButton extends StatelessWidget {
-  const ColorButton({
+  final AudioCache audioCache = AudioCache();
+  ColorButton({
     Key? key,
     required this.color,
-    required this.onPressed,
+    required this.sound,
   }) : super(key: key);
 
   final Color color;
-  final void Function() onPressed;
+  final String sound;
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicButton(
-      padding: const EdgeInsets.all(15),
-      onPressed: onPressed,
-      style: kNeumorphicStyle,
-      child: Container(
-        color: kMainColor,
-        height: 16,
-        width: 70,
+    return Consumer<GameBrain>(
+      builder: (context, brain, child) => NeumorphicButton(
+        padding: const EdgeInsets.all(15),
+        onPressed: () {
+          audioCache.play(sound);
+          brain.makeMove(kColorsList.indexOf(color));
+        },
+        style: kNeumorphicStyle,
         child: Container(
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(5),
+          color: kMainColor,
+          height: 16,
+          width: 70,
+          child: Container(
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
         ),
       ),

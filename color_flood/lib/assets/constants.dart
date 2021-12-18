@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 const Color k1Color = Color(0xFFF6D7A7);
@@ -9,7 +8,18 @@ const Color k5Color = Color(0xFF864879);
 const Color k6Color = Color(0xFFB91646);
 const Color k7Color = Color(0xFF161E54);
 
+List kColorsList = [
+  k1Color,
+  k2Color,
+  k3Color,
+  k4Color,
+  k5Color,
+  k6Color,
+];
+
 const Color kMainColor = Color(0xFF232426);
+
+const Color kTextColor = Colors.white70;
 
 const NeumorphicStyle kNeumorphicStyle = NeumorphicStyle(
     lightSource: LightSource.topLeft,

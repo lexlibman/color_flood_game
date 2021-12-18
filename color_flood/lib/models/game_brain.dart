@@ -2,21 +2,15 @@ import 'dart:math';
 import 'package:color_flood/assets/constants.dart';
 import 'package:flutter/widgets.dart';
 
-class GameBrain {
+class GameBrain with ChangeNotifier {
   List numberBoard;
   List<Row> rows = [];
   List<Row> get board => rows;
   int movesCounter = 0;
-  late Color chosenColor;
-
-  List kColorList = [
-    k1Color,
-    k2Color,
-    k3Color,
-    k4Color,
-    k5Color,
-    k6Color,
-  ];
+  int movesLimit = 30;
+  Color chosenColor = k1Color;
+  int highScore = 0;
+  bool isFilled = false;
 
   GameBrain({this.numberBoard = const []});
   int x = 0;
@@ -24,30 +18,46 @@ class GameBrain {
 
   // Makes game move :)
   void makeMove(int index) {
-    chosenColor = kColorList[index];
-    if (movesCounter < 30 && !isFilled()) {
+    chosenColor = kColorsList[index];
+
+    floodFill(numberBoard, x, y, index);
+
+    if (movesCounter < movesLimit && !isFilled) {
       movesCounter++;
     }
-    floodFill(numberBoard, x, y, index);
     createBoard();
   }
 
   // Checks that numberBoard is filled of same digit
-  bool isFilled() {
+  void checkFilled() {
+    isFilled = true;
     for (List l in numberBoard) {
       for (int i in l) {
         if (i != numberBoard[0][0]) {
-          return false;
+          isFilled = false;
         }
       }
     }
-    return true;
   }
 
-  void resetGame() {
+  //Reloads game to the next level with fewer moves limit
+  void nextLevel() {
+    highScore *= ((movesLimit - movesCounter) + 1);
     movesCounter = 0;
+    movesLimit--;
     generateBoard(14);
     createBoard();
+    notifyListeners();
+  }
+
+  //Restarts game
+  void resetGame() {
+    movesCounter = 0;
+    movesLimit = 30;
+    highScore = 0;
+    generateBoard(14);
+    createBoard();
+    notifyListeners();
   }
 
   // Flood algorithm
@@ -59,6 +69,11 @@ class GameBrain {
     // Replace the color at (x, y)
     screen[x][y] = newC;
 
+    // Increases game score
+    if (!isFilled) {
+      highScore++;
+    }
+
     // Recur for north, east, south and west
     floodFillUtil(screen, x + 1, y, prevC, newC);
     floodFillUtil(screen, x - 1, y, prevC, newC);
@@ -69,13 +84,16 @@ class GameBrain {
   // It mainly finds the previous color
   // on (x, y) and calls floodFillUtil()
   void floodFill(screen, x, y, newC) {
-    var prevC = screen[x][y];
-    if (prevC == newC) return;
-    floodFillUtil(screen, x, y, prevC, newC);
+    if (movesCounter < movesLimit) {
+      var prevC = screen[x][y];
+      if (prevC == newC) return;
+      floodFillUtil(screen, x, y, prevC, newC);
+    }
   }
 
   // Makes list of rows with colored containers
   void createBoard() {
+    checkFilled();
     rows = [];
     List<Widget> rowOfSquares;
 
@@ -84,10 +102,10 @@ class GameBrain {
       for (int number in row) {
         rowOfSquares.add(Container(
           decoration: BoxDecoration(
-              color: kColorList[number],
+              color: kColorsList[number],
               border: Border.all(
                 width: 25,
-                color: kColorList[number],
+                color: kColorsList[number],
               )),
           height: 24,
           width: 24,
@@ -97,6 +115,7 @@ class GameBrain {
         children: rowOfSquares,
       ));
     }
+    notifyListeners();
   }
 
   // Generates sized list of sized lists with random numbers
