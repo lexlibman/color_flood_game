@@ -1,5 +1,5 @@
 import 'package:color_flood/assets/constants.dart';
-import 'package:color_flood/models/game_brain.dart';
+import 'package:color_flood/models/game_data.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
@@ -17,12 +17,15 @@ class ColorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GameBrain>(
-      builder: (context, brain, child) => NeumorphicButton(
+    return Consumer<GameData>(
+      builder: (context, data, child) => NeumorphicButton(
+        provideHapticFeedback: data.isHapticOn,
         padding: const EdgeInsets.all(15),
         onPressed: () {
-          audioCache.play(sound);
-          brain.makeMove(kColorsList.indexOf(color));
+          if (data.isSoundOn) {
+            audioCache.play(sound);
+          }
+          data.makeMove(kColorsList.indexOf(color));
         },
         style: kNeumorphicStyle,
         child: Container(

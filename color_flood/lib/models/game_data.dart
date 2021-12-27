@@ -2,17 +2,27 @@ import 'dart:math';
 import 'package:color_flood/assets/constants.dart';
 import 'package:flutter/widgets.dart';
 
-class GameBrain with ChangeNotifier {
-  List numberBoard;
+class GameData with ChangeNotifier {
+  List numberBoard = [];
+
   List<Row> rows = [];
   List<Row> get board => rows;
+
   int movesCounter = 0;
   int movesLimit = 30;
-  Color chosenColor = k1Color;
   int highScore = 0;
-  bool isFilled = false;
 
-  GameBrain({this.numberBoard = const []});
+  Color chosenColor = k1Color;
+
+  bool _isFilled = false;
+  bool _isSoundOn = true;
+  bool _isHapticOn = true;
+
+  bool get isFilled => _isFilled;
+  bool get isSoundOn => _isSoundOn;
+  bool get isHapticOn => _isHapticOn;
+
+  // Start point coordinates
   int x = 0;
   int y = 0;
 
@@ -22,7 +32,7 @@ class GameBrain with ChangeNotifier {
 
     floodFill(numberBoard, x, y, index);
 
-    if (movesCounter < movesLimit && !isFilled) {
+    if (movesCounter < movesLimit && !_isFilled) {
       movesCounter++;
     }
     createBoard();
@@ -30,11 +40,11 @@ class GameBrain with ChangeNotifier {
 
   // Checks that numberBoard is filled of same digit
   void checkFilled() {
-    isFilled = true;
+    _isFilled = true;
     for (List l in numberBoard) {
       for (int i in l) {
         if (i != numberBoard[0][0]) {
-          isFilled = false;
+          _isFilled = false;
         }
       }
     }
@@ -70,7 +80,7 @@ class GameBrain with ChangeNotifier {
     screen[x][y] = newC;
 
     // Increases game score
-    if (!isFilled) {
+    if (!_isFilled) {
       highScore++;
     }
 
@@ -124,5 +134,15 @@ class GameBrain with ChangeNotifier {
     var rng = Random();
     numberBoard =
         List.generate(size, (_) => List.generate(size, (_) => rng.nextInt(6)));
+  }
+
+  void toggleSound() {
+    _isSoundOn = !_isSoundOn;
+    notifyListeners();
+  }
+
+  void toggleHaptic() {
+    _isHapticOn = !_isHapticOn;
+    notifyListeners();
   }
 }

@@ -1,5 +1,5 @@
-import 'package:color_flood/models/game_brain.dart';
-import 'package:color_flood/screens/main_menu.dart';
+import 'package:color_flood/models/game_data.dart';
+import 'package:color_flood/screens/main_menu_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => GameBrain(),
+          create: (_) => GameData(),
         )
       ],
       child: MaterialApp(

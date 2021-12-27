@@ -2,7 +2,7 @@ import 'package:color_flood/assets/constants.dart';
 import 'package:color_flood/components/game_board.dart';
 import 'package:color_flood/components/next_level_button.dart';
 import 'package:color_flood/components/restart_button.dart';
-import 'package:color_flood/models/game_brain.dart';
+import 'package:color_flood/models/game_data.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import '../components/color_button.dart';
@@ -28,7 +28,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GameBrain>(
+    return Consumer<GameData>(
       builder: (context, brain, child) => Scaffold(
         backgroundColor: kMainColor,
         appBar: AppBar(
@@ -94,9 +94,9 @@ class _GameScreenState extends State<GameScreen> {
                                       child: child, scale: animation);
                                 },
                                 child: Text(
-                                  '${context.watch<GameBrain>().highScore}',
+                                  '${context.watch<GameData>().highScore}',
                                   key: ValueKey<int>(
-                                      context.watch<GameBrain>().highScore),
+                                      context.watch<GameData>().highScore),
                                   style: const TextStyle(
                                       color: kTextColor, fontSize: 25),
                                 ),
@@ -117,9 +117,9 @@ class _GameScreenState extends State<GameScreen> {
                                       child: child, scale: animation);
                                 },
                                 child: Text(
-                                  '${context.watch<GameBrain>().movesCounter}',
+                                  '${context.watch<GameData>().movesCounter}',
                                   key: ValueKey<int>(
-                                      context.watch<GameBrain>().movesCounter),
+                                      context.watch<GameData>().movesCounter),
                                   style: const TextStyle(
                                       color: kTextColor, fontSize: 25),
                                 ),

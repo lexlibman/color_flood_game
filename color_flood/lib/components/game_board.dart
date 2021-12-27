@@ -1,5 +1,5 @@
 import 'package:color_flood/assets/constants.dart';
-import 'package:color_flood/models/game_brain.dart';
+import 'package:color_flood/models/game_data.dart';
 import 'package:color_flood/components/restart_button.dart';
 import 'package:provider/provider.dart';
 
@@ -20,13 +20,13 @@ class GameBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget currentBoard;
-    if (context.watch<GameBrain>().isFilled) {
-      int multiply = context.watch<GameBrain>().movesLimit -
-          context.watch<GameBrain>().movesCounter +
+    if (context.watch<GameData>().isFilled) {
+      int multiply = context.watch<GameData>().movesLimit -
+          context.watch<GameData>().movesCounter +
           1;
       String message;
-      if (context.watch<GameBrain>().movesCounter ==
-          context.watch<GameBrain>().movesLimit) {
+      if (context.watch<GameData>().movesCounter ==
+          context.watch<GameData>().movesLimit) {
         message = 'Do your best in next round!';
       } else {
         message = 'Your points will be multiplied by $multiply times!';
@@ -49,9 +49,9 @@ class GameBoard extends StatelessWidget {
           nextLevelButton,
         ],
       );
-    } else if (!context.watch<GameBrain>().isFilled &&
-        context.watch<GameBrain>().movesCounter >=
-            context.watch<GameBrain>().movesLimit) {
+    } else if (!context.watch<GameData>().isFilled &&
+        context.watch<GameData>().movesCounter >=
+            context.watch<GameData>().movesLimit) {
       currentBoard = Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -65,10 +65,10 @@ class GameBoard extends StatelessWidget {
       );
     } else {
       currentBoard = Column(
-        children: context.watch<GameBrain>().board,
+        children: context.watch<GameData>().board,
       );
     }
-    return Consumer<GameBrain>(
+    return Consumer<GameData>(
       builder: (context, brain, child) => Neumorphic(
         style: kGameBoardStyle,
         child: Container(
