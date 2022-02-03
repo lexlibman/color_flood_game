@@ -12,10 +12,6 @@ class MainMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bestScoreText = '';
-    if (context.watch<GameData>().bestScore > 0) {
-      bestScoreText = 'Best Score: ${context.watch<GameData>().bestScore}';
-    }
     return Scaffold(
       backgroundColor: kMainColor,
       body: SafeArea(
@@ -63,17 +59,21 @@ class MainMenu extends StatelessWidget {
                   ],
                 ),
               ),
-              if (context.watch<GameData>().bestScore > 0)
+              if (data.bestScore > 0)
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 70),
+                    padding: const EdgeInsets.symmetric(horizontal: 60),
                     child: FittedBox(
                       child: Text(
-                        bestScoreText,
+                        'Best Score: ${data.bestScore}',
                         style: const TextStyle(color: kTextColor),
                       ),
                     ),
                   ),
+                ),
+              if (data.bestScore <= 0)
+                Expanded(
+                  child: Container(),
                 ),
             ],
           ),
