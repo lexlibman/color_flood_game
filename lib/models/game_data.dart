@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:color_flood/assets/constants.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GameData with ChangeNotifier {
   List numberBoard = [];
@@ -10,7 +11,8 @@ class GameData with ChangeNotifier {
 
   int movesCounter = 0;
   int movesLimit = 30;
-  int highScore = 0;
+  int currentScore = 0;
+  int bestScore = 0;
 
   Color chosenColor = k1Color;
 
@@ -36,6 +38,9 @@ class GameData with ChangeNotifier {
       movesCounter++;
     }
     createBoard();
+    if (movesCounter >= movesLimit) {
+      saveBestScore();
+    }
   }
 
   // Checks that numberBoard is filled of same digit
@@ -52,7 +57,7 @@ class GameData with ChangeNotifier {
 
   //Reloads game to the next level with fewer moves limit
   void nextLevel() {
-    highScore *= ((movesLimit - movesCounter) + 1);
+    currentScore *= ((movesLimit - movesCounter) + 1);
     movesCounter = 0;
     movesLimit--;
     generateBoard(14);
@@ -64,7 +69,7 @@ class GameData with ChangeNotifier {
   void resetGame() {
     movesCounter = 0;
     movesLimit = 30;
-    highScore = 0;
+    currentScore = 0;
     generateBoard(14);
     createBoard();
     notifyListeners();
@@ -81,7 +86,7 @@ class GameData with ChangeNotifier {
 
     // Increases game score
     if (!_isFilled) {
-      highScore++;
+      currentScore++;
     }
 
     // Recur for north, east, south and west
@@ -136,13 +141,36 @@ class GameData with ChangeNotifier {
         List.generate(size, (_) => List.generate(size, (_) => rng.nextInt(6)));
   }
 
-  void toggleSound() {
+  void toggleSound() async {
     _isSoundOn = !_isSoundOn;
+    await SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool('isSoundOn', isSoundOn);
+    });
     notifyListeners();
   }
 
-  void toggleHaptic() {
+  void toggleHaptic() async {
     _isHapticOn = !_isHapticOn;
+    await SharedPreferences.getInstance().then((prefs) {
+      prefs.setBool('isHapticOn', isHapticOn);
+    });
     notifyListeners();
+  }
+
+  void loadPreferences() async {
+    var prefs = await SharedPreferences.getInstance();
+    _isHapticOn = prefs.getBool('isHapticOn') ?? true;
+    _isSoundOn = prefs.getBool('isSoundOn') ?? true;
+    bestScore = prefs.getInt('bestScore') ?? 0;
+  }
+
+  void saveBestScore() async {
+    if (currentScore > bestScore) {
+      bestScore = currentScore;
+      await SharedPreferences.getInstance().then((prefs) {
+        prefs.setInt('bestScore', bestScore);
+      });
+      notifyListeners();
+    }
   }
 }

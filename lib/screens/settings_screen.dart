@@ -26,7 +26,7 @@ class SettingsScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: kMainColor,
         title: const Text(
-          'SETTINGS',
+          'Settings',
           style: TextStyle(color: kTextColor),
         ),
       ),

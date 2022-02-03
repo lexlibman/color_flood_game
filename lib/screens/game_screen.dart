@@ -61,155 +61,128 @@ class _GameScreenState extends State<GameScreen> {
           ],
           backgroundColor: kMainColor,
           title: const Text(
-            'Color Flood',
+            "Let's Flood It!",
             style: TextStyle(color: kTextColor),
           ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(
-              flex: 4,
-              child: Container(
-                alignment: Alignment.center,
-                color: kMainColor,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Neumorphic(
-                            style: kNeumorphicStyle,
-                            child: SizedBox(
-                              height: 50,
-                              width: 140,
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 200),
-                                transitionBuilder: (Widget child,
-                                    Animation<double> animation) {
-                                  return ScaleTransition(
-                                      child: child, scale: animation);
-                                },
-                                child: Text(
-                                  '${context.watch<GameData>().highScore}',
-                                  key: ValueKey<int>(
-                                      context.watch<GameData>().highScore),
-                                  style: const TextStyle(
-                                      color: kTextColor, fontSize: 25),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Neumorphic(
-                            style: kNeumorphicStyle,
-                            child: SizedBox(
-                              height: 50,
-                              width: 60,
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 200),
-                                transitionBuilder: (Widget child,
-                                    Animation<double> animation) {
-                                  return ScaleTransition(
-                                      child: child, scale: animation);
-                                },
-                                child: Text(
-                                  '${context.watch<GameData>().movesCounter}',
-                                  key: ValueKey<int>(
-                                      context.watch<GameData>().movesCounter),
-                                  style: const TextStyle(
-                                      color: kTextColor, fontSize: 25),
-                                ),
-                              ),
-                            ),
-                          ),
-                          NeumorphicText(
-                            '/',
-                            style: const NeumorphicStyle(color: kTextColor),
-                            textStyle: NeumorphicTextStyle(
-                              fontSize: 35,
-                            ),
-                          ),
-                          Neumorphic(
-                            style: kNeumorphicStyle,
-                            child: SizedBox(
-                              height: 50,
-                              width: 60,
-                              child: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 200),
-                                transitionBuilder: (Widget child,
-                                    Animation<double> animation) {
-                                  return ScaleTransition(
-                                      child: child, scale: animation);
-                                },
-                                child: Text(
-                                  '${brain.movesLimit}',
-                                  key: ValueKey<int>(brain.movesLimit),
-                                  style: const TextStyle(
-                                      color: kTextColor, fontSize: 25),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Neumorphic(
+                  style: kNeumorphicStyle,
+                  child: SizedBox(
+                    height: 50,
+                    width: 140,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(child: child, scale: animation);
+                      },
+                      child: Text(
+                        '${context.watch<GameData>().currentScore}',
+                        key: ValueKey<int>(
+                            context.watch<GameData>().currentScore),
+                        style: const TextStyle(color: kTextColor, fontSize: 25),
                       ),
                     ),
-                    GameBoard(
-                      restartGameButton: RestartGameButton(onPressed: () {
-                        brain.resetGame();
-                      }),
-                      nextLevelButton: NextLevelButton(onPressed: () {
-                        brain.nextLevel();
-                      }),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(width: 20),
+                Neumorphic(
+                  style: kNeumorphicStyle,
+                  child: SizedBox(
+                    height: 50,
+                    width: 60,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(child: child, scale: animation);
+                      },
+                      child: Text(
+                        '${context.watch<GameData>().movesCounter}',
+                        key: ValueKey<int>(
+                            context.watch<GameData>().movesCounter),
+                        style: const TextStyle(color: kTextColor, fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ),
+                NeumorphicText(
+                  '/',
+                  style: const NeumorphicStyle(color: kTextColor),
+                  textStyle: NeumorphicTextStyle(
+                    fontSize: 35,
+                  ),
+                ),
+                Neumorphic(
+                  style: kNeumorphicStyle,
+                  child: SizedBox(
+                    height: 50,
+                    width: 60,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 200),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return ScaleTransition(child: child, scale: animation);
+                      },
+                      child: Text(
+                        '${brain.movesLimit}',
+                        key: ValueKey<int>(brain.movesLimit),
+                        style: const TextStyle(color: kTextColor, fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ColorButton(
-                          color: k1Color,
-                          sound: 'note1.wav',
-                        ),
-                        ColorButton(
-                          color: k2Color,
-                          sound: 'note2.wav',
-                        ),
-                        ColorButton(
-                          color: k3Color,
-                          sound: 'note3.wav',
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ColorButton(
-                          color: k4Color,
-                          sound: 'note4.wav',
-                        ),
-                        ColorButton(
-                          color: k5Color,
-                          sound: 'note5.wav',
-                        ),
-                        ColorButton(
-                          color: k6Color,
-                          sound: 'note6.wav',
-                        ),
-                      ],
-                    ),
-                  ],
-                ))
+            GameBoard(
+              restartGameButton: RestartGameButton(onPressed: () {
+                brain.resetGame();
+              }),
+              nextLevelButton: NextLevelButton(onPressed: () {
+                brain.nextLevel();
+              }),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ColorButton(
+                  color: k1Color,
+                  sound: 'note1.wav',
+                ),
+                ColorButton(
+                  color: k2Color,
+                  sound: 'note2.wav',
+                ),
+                ColorButton(
+                  color: k3Color,
+                  sound: 'note3.wav',
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ColorButton(
+                  color: k4Color,
+                  sound: 'note4.wav',
+                ),
+                ColorButton(
+                  color: k5Color,
+                  sound: 'note5.wav',
+                ),
+                ColorButton(
+                  color: k6Color,
+                  sound: 'note6.wav',
+                ),
+              ],
+            )
           ],
         ),
       ),

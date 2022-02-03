@@ -1,5 +1,5 @@
 import 'package:color_flood/models/game_data.dart';
-import 'package:color_flood/screens/main_menu_screen.dart';
+import 'package:color_flood/screens/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Coloringator',
+        title: 'Floodish',
         theme: ThemeData.dark(),
-        home: MainMenu(),
+        home: const LoadingScreen(),
       ),
     );
   }

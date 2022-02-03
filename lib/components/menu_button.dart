@@ -16,17 +16,20 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<GameData>(
-      builder: (context, data, child) => NeumorphicButton(
-        provideHapticFeedback: data.isHapticOn,
-        style: kNeumorphicStyle,
-        onPressed: onPressed,
-        child: SizedBox(
-          height: 30,
-          width: 200,
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 25, color: kTextColor),
+      builder: (context, data, child) => Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: NeumorphicButton(
+          provideHapticFeedback: data.isHapticOn,
+          style: kNeumorphicStyle,
+          onPressed: onPressed,
+          child: SizedBox(
+            height: 30,
+            width: 200,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 25, color: kTextColor),
+            ),
           ),
         ),
       ),
